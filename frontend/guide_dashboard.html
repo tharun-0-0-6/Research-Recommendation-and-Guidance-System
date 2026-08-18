@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Dashboard - ResearchIQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f7f4;
+            --surface: #ffffff;
+            --text: #1a1916;
+            --accent: #1e40af;
+            --border: rgba(0,0,0,0.08);
+            font-family: 'DM Sans', sans-serif;
+        }
+        body { margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--text); }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; background: #111827; color: white; display: flex; flex-direction: column; padding: 1.5rem; }
+        .sidebar-brand { font-size: 20px; font-weight: 700; margin-bottom: 2rem; display: flex; align-items: center; gap: 8px; }
+        .sidebar-brand span { color: var(--accent); }
+        .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; margin-bottom: 4px; color: #9ca3af; }
+        .nav-item:hover { background: #1f2937; color: white; }
+        .nav-item.active { background: var(--accent); color: white; }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .header { height: 64px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: flex-end; padding: 0 2rem; }
+        .section { display: none; padding: 2rem; flex: 1; overflow-y: auto; }
+        .section.active { display: block; }
+
+        /* Chat Layout */
+        .chat-layout { display: flex; height: 100%; border: 1px solid var(--border); border-radius: 12px; background: white; overflow: hidden; }
+        .chat-sidebar { width: 300px; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+        .chat-list { flex: 1; overflow-y: auto; }
+        .chat-item { padding: 1.25rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+        .chat-item:hover { background: #f9fafb; }
+        .chat-item.active { background: #eff6ff; }
+        .chat-item-name { font-weight: 600; font-size: 14px; }
+        .chat-item-last { font-size: 12px; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+
+        .chat-window { flex: 1; display: flex; flex-direction: column; background: #fff; }
+        .chat-messages { flex: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 14px; }
+        .msg.received { background: #f3f4f6; align-self: flex-start; }
+        .msg.sent { background: var(--accent); color: white; align-self: flex-end; }
+        .chat-input { padding: 1rem; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        input[type="text"] { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        th { background: #f9fafb; padding: 12px 16px; text-align: left; font-size: 12px; text-transform: uppercase; color: #6b7280; border-bottom: 1px solid var(--border); }
+        td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+        /* Profile UI Redesign */
+        .profile-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-top: 1rem; }
+        .profile-card-header { background: #111827; color: white; padding: 2.5rem 2rem; text-align: center; }
+        .profile-avatar-large { width: 80px; height: 80px; background: var(--accent); border-radius: 20px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; border: 4px solid rgba(255,255,255,0.1); }
+        .profile-card-body { padding: 2rem 2.5rem; }
+        
+        .profile-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+        .stat-pill { background: #f9fafb; padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid #f3f4f6; }
+        .stat-pill-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 4px; }
+        .stat-pill-value { font-size: 20px; font-weight: 700; color: #111827; }
+
+        .profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+        .details-section-title { font-size: 11px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .specialization-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .spec-tag { background: #eff6ff; color: #1e40af; padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 500; }
+        
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+        .metric-card { background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
+        .unread-chat { background: #fff !important; border-left: 4px solid var(--accent) !important; }
+        .unread-chat .chat-item-name { color: #111827; font-weight: 700; }
+        .unread-chat .chat-item-last { color: #374151; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">Research<span>IQ</span></div>
+        <div class="nav-item active" onclick="switchSection('profile')">Profile</div>
+        <div class="nav-item" onclick="switchSection('students')">Students</div>
+        <div class="nav-item" onclick="switchSection('chat')">Chat</div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div id="guideName" style="font-weight: 600">Loading...</div>
+            <button onclick="logout()" style="margin-left: 1rem; border:none; background:none; color: #6b7280; cursor:pointer">Logout</button>
+        </div>
+
+        <!-- PROFILE SECTION -->
+        <div id="profile" class="section active">
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <div id="p-avatar" class="profile-avatar-large"></div>
+                    <h2 id="p-name" style="margin:0; font-size: 26px;"></h2>
+                    <div id="p-title" style="color: rgba(255,255,255,0.7); font-size: 15px; margin-top: 6px;"></div>
+                    <div id="p-inst" style="color: rgba(255,255,255,0.5); font-size: 13px; margin-top: 2px;"></div>
+                </div>
+                <div class="profile-card-body">
+                    <div class="profile-stats-row">
+                        <div class="stat-pill">
+                            <div class="stat-pill-label">Student Rating</div>
+                            <div id="p-rating" class="stat-pill-value">⭐ -</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div class="stat-pill-label">Experience</div>
+                            <div id="p-exp" class="stat-pill-value">0y</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div class="stat-pill-label">Publications</div>
+                            <div id="p-pubs" class="stat-pill-value">0</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-details-grid">
+                        <div>
+                            <div class="details-section-title"><span>📚</span> Research Domain</div>
+                            <div id="p-domain" style="font-size: 16px; color: #4b5563;"></div>
+                        </div>
+                        <div>
+                            <div class="details-section-title"><span>✨</span> Specializations</div>
+                            <div id="p-specs" class="specialization-tags"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2.5rem;">
+                <h3 style="font-size: 14px; text-transform: uppercase; color: #6b7280; letter-spacing: 1px; margin-bottom: 1rem;">Platform Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; font-weight: 600;">Students Mentored</div>
+                        <div id="mentoredCount" style="font-size: 28px; font-weight: 700; margin-top: 8px">0</div>
+                    </div>
+                    <div class="metric-card">
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; font-weight: 600;">Chat Requests</div>
+                        <div id="unrepliedCount" style="font-size: 28px; font-weight: 700; margin-top: 8px">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENTS SECTION -->
+        <div id="students" class="section">
+            <h2>Your Students</h2>
+            <table style="margin-top: 1.5rem">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Research Topic</th>
+                        <th>Domain</th>
+                        <th>Current Status</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTable">
+                    <!-- Loaded via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CHAT SECTION -->
+        <div id="chat" class="section" style="padding:0; height: 100%">
+            <div class="chat-layout">
+                <div class="chat-sidebar">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); font-weight: 700">Conversations</div>
+                    <div class="chat-list" id="chatList">
+                        <!-- Loaded via JS -->
+                    </div>
+                </div>
+                <div class="chat-window">
+                    <div id="chatHeader" style="padding: 1.25rem; border-bottom: 1px solid var(--border); font-weight: 600">Conversations</div>
+                    <div id="noChatSelected" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color: #6b7280; gap: 1rem;">
+                        <div style="font-size: 48px">💬</div>
+                        <div>Select a student from the list to start chatting</div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages" style="display:none"></div>
+                    <div class="chat-input" id="chatInputArea" style="display:none">
+                        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button onclick="sendMessage()" style="background: var(--accent); color:white; border:none; padding: 10px 20px; border-radius: 8px; cursor:pointer">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let guide = null;
+        let selectedStudent = null;
+        let currentGuideId = null;
+
+        (function initSession() {
+            guide = JSON.parse(sessionStorage.getItem('guide'));
+            if (!guide) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentGuideId = guide.teacher_id;
+            document.getElementById('guideName').textContent = guide.full_name;
+            
+            // Populate Profile Details
+            document.getElementById('p-avatar').textContent = guide.full_name[0];
+            document.getElementById('p-name').textContent = guide.full_name;
+            document.getElementById('p-title').textContent = guide.designation;
+            document.getElementById('p-inst').textContent = guide.institution;
+            document.getElementById('p-exp').textContent = `${guide.years_of_experience || 0}y`;
+            document.getElementById('p-pubs').textContent = guide.publications_count || 0;
+            document.getElementById('p-domain').textContent = guide.department || 'General Research';
+            
+            const specs = (guide.specialization_keywords || "").split(';').filter(s => s.trim());
+            document.getElementById('p-specs').innerHTML = specs.length ? specs.map(s => `<span class="spec-tag">${s.trim()}</span>`).join('') : '<span style="color:#9ca3af">No specializations listed</span>';
+
+            loadStudents();
+            loadChatList();
+            loadStats();
+        })();
+
+        async function loadStats() {
+            const res = await fetch(`/api/teacher/stats?id=${currentGuideId}`);
+            const data = await res.json();
+            document.getElementById('p-rating').textContent = `⭐ ${data.avg}`;
+            document.getElementById('mentoredCount').textContent = data.mentored;
+            document.getElementById('unrepliedCount').textContent = data.unreplied;
+        }
+
+        function switchSection(sec) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(sec).classList.add('active');
+            event.target.classList.add('active');
+            if (sec === 'students') loadStudents();
+            if (sec === 'chat') loadChatList();
+        }
+
+        async function loadStudents() {
+            const res = await fetch(`/api/guide/students?id=${guide.teacher_id}`);
+            const data = await res.json();
+            document.getElementById('activeCount').textContent = data.length;
+            const tbody = document.getElementById('studentTable');
+            tbody.innerHTML = data.map(s => `
+                <tr>
+                    <td><strong>${s.name}</strong></td>
+                    <td>${s.topic}</td>
+                    <td><span style="background:#eff6ff; color:#1e40af; padding:4px 10px; border-radius:100px; font-size:12px">${s.domain}</span></td>
+                    <td><span style="color:#059669">${s.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadChatList() {
+            const res = await fetch(`/api/guide/chatlist?id=${guide.teacher_id}`);
+            const data = await res.json();
+            const list = document.getElementById('chatList');
+            list.innerHTML = data.map(c => {
+                const isUnread = c.is_unread;
+                return `
+                <div class="chat-item ${selectedStudent === c.id ? 'active' : ''} ${isUnread ? 'unread-chat' : ''}" onclick="selectChat('${c.id}', '${c.name}')">
+                    <div class="chat-item-name">${c.name} ${isUnread ? '🔴' : ''}</div>
+                    <div class="chat-item-last">${c.last_text}</div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        async function selectChat(id, name) {
+            selectedStudent = id;
+            document.getElementById('chatHeader').textContent = name;
+            document.getElementById('noChatSelected').style.display = 'none';
+            document.getElementById('chatMessages').style.display = 'flex';
+            document.getElementById('chatInputArea').style.display = 'flex';
+
+            // Mark as Read
+            await fetch('/api/chat/mark_read', {
+                method: 'POST',
+                body: JSON.stringify({ 
+                    cid: selectedStudent, 
+                    tid: guide.teacher_id, 
+                    uid: guide.teacher_id 
+                })
+            });
+
+            loadChatList(); // refresh to clear highlight
+            loadHistory();
+        }
+
+        async function loadHistory() {
+            if (!selectedStudent) return;
+            const res = await fetch(`/api/chat/history?user_a=${guide.teacher_id}&user_b=${selectedStudent}`);
+            const data = await res.json();
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = data.map(m => `
+                <div class="msg ${m.sender === guide.teacher_id ? 'sent' : 'received'}">${m.text}</div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = document.getElementById('chatInput').value;
+            if (!text || !selectedStudent) return;
+            await fetch('/api/chat/send', {
+                method: 'POST',
+                body: JSON.stringify({ sender: guide.teacher_id, receiver: selectedStudent, text: text })
+            });
+            document.getElementById('chatInput').value = '';
+            loadHistory();
+            loadChatList();
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        // Auto-refresh chat every 5s
+        setInterval(() => {
+            if (document.getElementById('chat').classList.contains('active')) {
+                loadHistory();
+                loadChatList();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

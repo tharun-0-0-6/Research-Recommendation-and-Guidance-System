@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ResearchIQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f7f4;
+            --surface: #ffffff;
+            --text: #1a1916;
+            --accent: #1e40af;
+            --border: rgba(0,0,0,0.08);
+            font-family: 'DM Sans', sans-serif;
+        }
+        body { background: var(--bg); display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 400px; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .tab { cursor: pointer; font-size: 14px; font-weight: 600; color: #9ca3af; padding-bottom: 5px; }
+        .tab.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; }
+        input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .error { color: #dc2626; font-size: 12px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2 style="margin-top:0">Welcome to ResearchIQ</h2>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('researcher')">Researcher</div>
+            <div class="tab" onclick="switchTab('guide')">Guide</div>
+        </div>
+
+        <div id="researcher-form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="cust-username" placeholder="Enter researcher username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="cust-password" placeholder="••••••••">
+            </div>
+            <button class="btn" onclick="loginCustomer()">Login as Researcher</button>
+            <div id="cust-login-error" class="error">Invalid credentials. Please try again.</div>
+        </div>
+
+        <div id="guide-form" style="display:none">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter guide username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            <button class="btn" onclick="loginGuide()">Login as Guide</button>
+            <div id="login-error" class="error">Invalid credentials. Please try again.</div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(role) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (role === 'researcher') {
+                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.getElementById('researcher-form').style.display = 'block';
+                document.getElementById('guide-form').style.display = 'none';
+            } else {
+                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.getElementById('researcher-form').style.display = 'none';
+                document.getElementById('guide-form').style.display = 'block';
+            }
+        }
+
+        async function loginCustomer() {
+            const u = document.getElementById('cust-username').value;
+            const p = document.getElementById('cust-password').value;
+            const res = await fetch('/api/login/customer', {
+                method: 'POST',
+                body: JSON.stringify({ username: u, password: p })
+            });
+            const data = await res.json();
+            if (data.success) {
+                sessionStorage.setItem('customer', JSON.stringify(data.customer));
+                window.location.href = 'app.html';
+            } else {
+                document.getElementById('cust-login-error').style.display = 'block';
+            }
+        }
+
+        async function loginGuide() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                body: JSON.stringify({ username: u, password: p })
+            });
+            const data = await res.json();
+            if (data.success) {
+                sessionStorage.setItem('guide', JSON.stringify(data.guide));
+                window.location.href = 'guide_dashboard.html';
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

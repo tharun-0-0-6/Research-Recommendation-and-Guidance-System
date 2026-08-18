@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResearchIQ — Research Recommendation Platform</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='8' fill='%231e40af'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f7f4;
+      --surface: #ffffff;
+      --surface2: #f2f1ed;
+      --surface3: #e8e6df;
+      --border: rgba(0, 0, 0, 0.08);
+      --border2: rgba(0, 0, 0, 0.13);
+      --text: #1a1916;
+      --text2: #5a5855;
+      --text3: #9a9794;
+      --accent: #1e40af;
+      --accent-bg: #eff6ff;
+      --accent-light: #dbeafe;
+      --teal: #0f766e;
+      --teal-bg: #f0fdfa;
+      --teal-light: #ccfbf1;
+      --amber: #92400e;
+      --amber-bg: #fffbeb;
+      --amber-light: #fde68a;
+      --violet: #5b21b6;
+      --violet-bg: #f5f3ff;
+      --violet-light: #ddd6fe;
+      --green: #166534;
+      --green-bg: #f0fdf4;
+      --green-light: #bbf7d0;
+      --red: #991b1b;
+      --red-bg: #fef2f2;
+      --red-light: #fecaca;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .nav-tagline {
+      font-size: 12px;
+      color: var(--text3);
+      margin-left: auto;
+    }
+
+    .nav-badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border: 1px solid var(--accent-light);
+      border-radius: 100px;
+      padding: 2px 8px;
+      text-transform: uppercase;
+    }
+
+    /* ── LAYOUT ── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 600;
+      letter-spacing: -0.8px;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      margin-top: 0.75rem;
+      font-size: 15px;
+      color: var(--text2);
+      max-width: 520px;
+      margin-inline: auto;
+    }
+
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── FORM CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-header h2 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+
+    .step-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 100px;
+      padding: 2px 7px;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    /* ── TOP NAV ── */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .user-info-text {
+      text-align: right;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+    }
+
+    .user-type {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .type-premium {
+      background: var(--amber-bg);
+      color: #92400e;
+      border: 1px solid var(--amber-light);
+    }
+
+    .type-free {
+      background: var(--surface3);
+      color: var(--text3);
+    }
+
+    .user-avatar-small {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .header {
+      margin-bottom: 2.5rem;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
+    }
+
+    input[type=text],
+    input[type=number],
+    textarea,
+    select {
+      width: 100%;
+      font-size: 13.5px;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 8px 11px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+
+    input[type=text]:focus,
+    input[type=number]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.5;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239a9794' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      cursor: pointer;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ── FILE UPLOAD ── */
+    .file-zone {
+      border: 1.5px dashed var(--border2);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: var(--bg);
+      transition: all 0.15s;
+      position: relative;
+    }
+
+    .file-zone:hover,
+    .file-zone.drag {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+
+    .file-zone input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .file-zone p {
+      font-size: 12px;
+      color: var(--text3);
+      margin-top: 4px;
+    }
+
+    .file-zone strong {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .file-icon {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .file-chosen {
+      font-size: 12px;
+      color: var(--teal);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ── SUBMIT ── */
+    .btn-primary {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'DM Sans', sans-serif;
+      margin-top: 1rem;
+    }
+
+    .btn-primary:hover {
+      background: #1d3a9e;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      background: var(--border2);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 1rem 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-text {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── RESULTS ── */
+    .results-area {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .empty-state {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .empty-icon {
+      font-size: 36px;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .empty-state p {
+      font-size: 13px;
+      color: var(--text3);
+      margin-top: 0.4rem;
+    }
+
+    /* ── CONFIDENCE BANNER ── */
+    .conf-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .conf-score {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      color: var(--accent);
+      min-width: 60px;
+    }
+
+    .conf-bar-wrap {
+      flex: 1;
+    }
+
+    .conf-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text3);
+      margin-bottom: 5px;
+    }
+
+    .conf-bar {
+      height: 6px;
+      background: var(--surface3);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .conf-fill {
+      height: 100%;
+      background: linear-gradient(to right, #3b82f6, #1e40af);
+      border-radius: 100px;
+      transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .conf-desc {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 3px;
+    }
+
+    /* ── SECTION CARDS ── */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      padding: 0.9rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-head h3 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .section-count {
+      font-size: 11px;
+      color: var(--text3);
+      margin-left: auto;
+    }
+
+    .section-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .icon-blue {
+      background: var(--accent-bg);
+    }
+
+    .icon-teal {
+      background: var(--teal-bg);
+    }
+
+    .icon-amber {
+      background: var(--amber-bg);
+    }
+
+    .icon-violet {
+      background: var(--violet-bg);
+    }
+
+    .icon-green {
+      background: var(--green-bg);
+    }
+
+    /* ── EQUIPMENT GRID ── */
+    .equip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 8px;
+      padding: 1rem;
+    }
+
+    .equip-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .equip-name {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .equip-cat {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    .cat-sensor {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .cat-lab {
+      background: var(--violet-bg);
+      color: var(--violet);
+    }
+
+    .cat-field {
+      background: var(--teal-bg);
+      color: var(--teal);
+    }
+
+    .cat-computing {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .cat-fabrication {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .cat-equipment {
+      background: var(--surface2);
+      color: var(--text2);
+    }
+
+    .score-bar {
+      height: 2px;
+      background: var(--border);
+      border-radius: 100px;
+      margin-top: 4px;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: var(--accent);
+    }
+
+    /* ── METHODOLOGY LIST ── */
+    .meth-list {
+      padding: 0.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .meth-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .meth-name {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .meth-type {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    .type-exp {
+      background: var(--teal-bg);
+      color: var(--teal);
+    }
+
+    .type-comp {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .type-stat {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .type-anal {
+      background: var(--violet-bg);
+      color: var(--violet);
+    }
+
+    /* ── TOOL CHIPS ── */
+    .tool-wrap {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tool-chip {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid var(--border2);
+      background: var(--bg);
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tool-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .prog {
+      background: var(--accent);
+    }
+
+    .data {
+      background: var(--teal);
+    }
+
+    .sim {
+      background: var(--amber);
+    }
+
+    .viz {
+      background: var(--violet);
+    }
+
+    .design {
+      background: #64748b;
+    }
+
+    /* ── SIMILAR PROJECTS ── */
+    .similar-list {
+      padding: 0.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sim-item {
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sim-id {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text3);
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .sim-title {
+      font-size: 12.5px;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .sim-score {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .sim-loc {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    /* ── LOCATIONS ── */
+    .loc-wrap {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .loc-chip {
+      font-size: 12px;
+      color: var(--teal);
+      background: var(--teal-bg);
+      border: 1px solid var(--teal-light);
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── ROADMAP ── */
+    .roadmap-wrap {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .roadmap-wrap::before {
+      content: '';
+      position: absolute;
+      left: 29px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .phase-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .phase-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 1;
+      margin-top: 2px;
+    }
+
+    .phase-body {
+      flex: 1;
+    }
+
+    .phase-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .phase-steps {
+      margin-top: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .phase-step {
+      font-size: 11.5px;
+      color: var(--text2);
+      padding: 2px 0;
+    }
+
+    .phase-toggle {
+      font-size: 11px;
+      color: var(--accent);
+      cursor: pointer;
+      margin-top: 4px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    /* ── PROJECT INFO DISPLAY ── */
+    .proj-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 1rem;
+    }
+
+    .info-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+    }
+
+    .info-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    .info-val {
+      font-size: 12.5px;
+      color: var(--text);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* ── LABS ── */
+    .lab-list {
+      padding: 0.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lab-item {
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lab-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .lab-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .lab-loc-tag {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--teal);
+      background: var(--teal-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .lab-equip-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .lab-equip-tag {
+      font-size: 9px;
+      background: var(--surface3);
+      color: var(--text2);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .lab-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+      padding-top: 8px;
+    }
+
+    .lab-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .lab-info-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: var(--text3);
+      font-weight: 600;
+    }
+
+    .lab-info-val {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .unread-chat {
+      background: var(--surface2) !important;
+      border-left: 4px solid var(--accent) !important;
+    }
+    .unread-chat .chat-item-name {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .unread-chat .chat-item-last {
+      color: var(--text2);
+      font-weight: 600;
+    }
+
+    /* Teacher Cards */
+    .teacher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+      padding: 1rem;
+    }
+
+    .teacher-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .teacher-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .teacher-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .teacher-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .teacher-info {
+      flex: 1;
+    }
+
+    .teacher-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .teacher-desc {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .teacher-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .teacher-tag {
+      font-size: 9px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 100px;
+      background: var(--surface3);
+      color: var(--text2);
+    }
+
+    .teacher-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .teacher-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-chat {
+      background: var(--accent-bg);
+      color: var(--accent);
+      border: 1px solid var(--accent-light);
+    }
+
+    .btn-chat:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-profile {
+      background: white;
+      color: var(--text2);
+      border: 1px solid var(--border2);
+    }
+
+    .btn-profile:hover {
+      background: var(--bg);
+      border-color: var(--text3);
+    }
+
+    /* Profile Preview Modal */
+    .profile-popup {
+      background: white;
+      width: 500px;
+      max-width: 90%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .profile-header {
+      background: #111827;
+      color: white;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .profile-close:hover { background: rgba(255,255,255,0.2); }
+
+    .profile-avatar-large {
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      border-radius: 20px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      border: 4px solid rgba(255,255,255,0.1);
+    }
+
+    .profile-body { padding: 2rem; }
+    
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #f3f4f6;
+    }
+
+    .stat-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .stat-value { font-size: 20px; font-weight: 700; color: #111827; margin-top: 4px; }
+
+    .profile-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+    .profile-tag { background: #eff6ff; color: #1e40af; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+
+
+    .faculty-subset-title {
+      grid-column: 1 / -1;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border-left: 4px solid var(--accent);
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .location-badge {
+      font-size: 10px;
+      background: var(--green-bg);
+      color: var(--green);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--green-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: var(--surface);
+      width: 380px;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-icon {
+      font-size: 40px;
+      margin-bottom: 1rem;
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .modal p {
+      font-size: 14px;
+      color: var(--text2);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .modal-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      border: none;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .btn-gold:hover {
+      transform: scale(1.02);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text3);
+      font-size: 13px;
+    }
+
+    /* ── ERROR ── */
+    .error-bar {
+      background: var(--red-bg);
+      border: 1px solid var(--red-light);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--red);
+    }
+
+    /* ── UTILS ── */
+    .mt-1 {
+      margin-top: 0.5rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+    /* ── DASHBOARD LAYOUT ── */
+    body { margin: 0; display: flex; height: 100vh; overflow: hidden; background: var(--bg); }
+    .sidebar { width: 260px; background: #111827; color: white; display: flex; flex-direction: column; padding: 1.5rem; flex-shrink: 0; }
+    .sidebar-brand { font-size: 20px; font-weight: 700; margin-bottom: 2rem; color: #fff; }
+    .sidebar-brand span { color: var(--accent); }
+    .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; margin-bottom: 4px; color: #9ca3af; display: flex; align-items: center; gap: 10px; }
+    .nav-item:hover { background: #1f2937; color: white; }
+    .nav-item.active { background: var(--accent); color: white; }
+
+    .main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    .dash-header { height: 64px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; flex-shrink: 0; z-index: 100; }
+    .section { display: none; height: 100%; overflow-y: auto; padding-bottom: 4rem; }
+    .section.active { display: block; }
+
+    /* ── PROFILE SECTION STYLES ── */
+    .profile-wrap { max-width: 800px; margin: 3rem auto; padding: 0 1.5rem; }
+    .profile-card { background: white; border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; box-shadow: var(--shadow-md); display: flex; gap: 2rem; }
+    .p-avatar { width: 120px; height: 120px; border-radius: 24px; background: var(--accent-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700; }
+    .p-info h2 { font-size: 28px; margin: 0; }
+    .p-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 8px; }
+
+    /* ── CHAT INTEGRATION ── */
+    .chat-layout { display: flex; height: calc(100vh - 64px); background: white; }
+    .chat-sidebar { width: 320px; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+    .chat-list { flex: 1; overflow-y: auto; }
+    .c-item { padding: 1.25rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+    .c-item:hover { background: #f9fafb; }
+    .c-item.active { background: #eff6ff; border-right: 3px solid var(--accent); }
+    .c-item-name { font-weight: 600; font-size: 15px; color: var(--text); }
+    .c-item-last { font-size: 12px; color: var(--text3); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .chat-view { flex: 1; display: flex; flex-direction: column; background: #fff; }
+    .chat-messages { flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #fafafa; }
+    .msg { max-width: 70%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
+    .msg.sent { align-self: flex-end; background: var(--accent); color: white; border-bottom-right-radius: 4px; }
+    .msg.received { align-self: flex-start; background: white; color: var(--text); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+    .chat-input-row { padding: 1.25rem 2rem; border-top: 1px solid var(--border); display: flex; gap: 12px; background: white; }
+    .chat-input { flex: 1; padding: 12px; border: 1px solid var(--border2); border-radius: 12px; outline: none; font-size: 14px; font-family: inherit; }
+    .chat-input:focus { border-color: var(--accent); }
+    .chat-send-btn { background: var(--accent); color: white; border: none; padding: 0 24px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+
+    /* Fix original styles for dashboard container */
+    .section-recommendation .container { padding: 0 2rem; max-width: 1200px; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-brand">Research<span>IQ</span></div>
+    <div class="nav-item active" onclick="switchSection('recommendation')">🔍 Recommendations</div>
+    <div class="nav-item" onclick="switchSection('profile')">👤 Profile</div>
+    <div class="nav-item" onclick="switchSection('chat')">💬 Chat</div>
+    <div style="flex:1"></div>
+    <div class="nav-item" onclick="window.location.href='login.html'">🚪 Logout</div>
+  </div>
+
+  <div class="main-area">
+    <div class="dash-header">
+      <div style="font-weight: 600; font-size: 14px; color: var(--text2)" id="section-title">Researcher Dashboard</div>
+      <div class="user-profile" id="userProfile">
+          <div class="user-info-text">
+              <span class="user-name" id="display-name">Loading...</span>
+              <span class="user-type" id="display-type">...</span>
+          </div>
+          <div class="user-avatar-small" id="display-avatar">?</div>
+      </div>
+    </div>
+
+    <!-- 1. RECOMMENDATION SECTION (ORIGINAL CONTENT) -->
+    <div id="recommendation" class="section active section-recommendation">
+      <nav class="nav">
+        <div class="nav-logo">
+          <div class="nav-logo-dot"></div>
+          ResearchIQ
+        </div>
+        <span class="nav-badge">ML-Powered</span>
+        <span class="nav-tagline">Research Recommendation Platform</span>
+      </nav>
+
+      <div class="hero">
+        <h1>Transform your research idea<br />into an <span>actionable plan</span></h1>
+        <p>Describe your project and get instant AI-powered recommendations for equipment, methodologies, tools, and a
+          complete execution roadmap.</p>
+      </div>
+
+      <div class="main">
+
+        <!-- ── LEFT: INPUT FORM ── -->
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+          <!-- Step 1: Quick Fill from File -->
+          <div class="card">
+            <div class="card-header">
+              <span class="step-badge">1</span>
+              <h2>Upload project description</h2>
+            </div>
+            <div class="card-body">
+              <div class="file-zone" id="fileZone">
+                <input type="file" id="fileInput" accept=".txt,.pdf,.md" />
+                <div class="file-icon">📄</div>
+                <strong>Drop a .txt / .pdf / .md file</strong>
+                <p>We'll extract project details automatically</p>
+                <div class="file-chosen hidden" id="fileChosen"></div>
+              </div>
+              <div id="extracting" class="hidden"
+                style="text-align:center; padding: 0.5rem 0; font-size:12px; color:var(--text3);">
+                ⏳ Extracting details from file…
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Manual Form -->
+          <div class="card">
+            <div class="card-header">
+              <span class="step-badge">2</span>
+              <h2>Project details</h2>
+            </div>
+            <div class="card-body">
+              <div class="field">
+                <label>Project title</label>
+                <input type="text" id="title" placeholder="e.g. Smart Water Quality Monitoring System" />
+              </div>
+              <div class="field">
+                <label>Project description</label>
+                <textarea id="description" placeholder="Describe your research idea, goals, expected outcomes…"></textarea>
+              </div>
+              <div class="row-2">
+                <div class="field">
+                  <label>Research domain</label>
+                  <select id="domain">
+                    <option value="">Select domain</option>
+                    <option>Environmental Science</option>
+                    <option>Biomedical</option>
+                    <option>CS-AI</option>
+                    <option>Electronics</option>
+                    <option>Materials Science</option>
+                    <option>Civil</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Project type</label>
+                  <select id="ptype">
+                    <option value="">Select type</option>
+                    <option>Experimental</option>
+                    <option>Computational</option>
+                    <option>Survey-based</option>
+                    <option>Mixed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row-2">
+                <div class="field">
+                  <label>Budget range (INR)</label>
+                  <select id="budget">
+                    <option value="">&lt;1L</option>
+                    <option>1L-5L</option>
+                    <option>5L-20L</option>
+                    <option>20L-1Cr</option>
+                    <option>&gt;1Cr</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Duration (months)</label>
+                  <input type="number" id="duration" value="6" min="1" max="60" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Team expertise</label>
+                <input type="text" id="expertise" placeholder="e.g. ML, Embedded Systems, Data Analysis" />
+              </div>
+              <div class="field">
+                <label>Your State <span style="font-size:10px;color:var(--text3);font-weight:400">(for local faculty &amp; lab matching)</span></label>
+                <select id="state_select">
+                  <option value="">Select State</option>
+                  <option>Andhra Pradesh</option>
+                  <option>Bihar</option>
+                  <option>Delhi</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Maharashtra</option>
+                  <option>Odisha</option>
+                  <option>Punjab</option>
+                  <option>Rajasthan</option>
+                  <option>Tamil Nadu</option>
+                  <option>Telangana</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Uttarakhand</option>
+                  <option>West Bengal</option>
+                </select>
+              </div>
+              <div id="errorBar" class="error-bar hidden"></div>
+
+              <button class="btn-primary" id="submitBtn" onclick="getRecommendations()">
+                <span id="btnText">Get recommendations</span>
+                <span id="btnSpinner" class="spinner hidden"></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── RIGHT: RESULTS ── -->
+        <div class="results-area" id="results">
+          <div class="empty-state">
+            <div class="empty-icon">🔬</div>
+            <h3>Your recommendations will appear here</h3>
+            <p>Fill in your project details and click "Get recommendations" to begin.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. PROFILE SECTION -->
+    <div id="profile" class="section">
+      <div class="profile-wrap">
+        <div class="profile-card">
+          <div class="p-avatar" id="p-avatar">?</div>
+          <div class="p-info">
+            <h2 id="p-name">Loading...</h2>
+            <div id="p-badge" class="p-badge">...</div>
+            <div style="margin-top: 2rem; display: grid; gap: 1rem; color: var(--text2); font-size: 15px;">
+              <div><strong>🏛️ University:</strong> <span id="p-uni"></span></div>
+              <div><strong>🔬 Department:</strong> <span id="p-dept"></span></div>
+              <div><strong>👤 Username:</strong> <span id="p-username"></span></div>
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                <strong>Account Status:</strong> <span id="p-status"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CHAT SECTION -->
+    <div id="chat" class="section" style="padding:0">
+      <div class="chat-layout">
+        <div class="chat-sidebar">
+          <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 16px;">Conversations</div>
+          <div class="chat-list" id="chatList"></div>
+        </div>
+        <div class="chat-view">
+          <div id="chatHead" style="padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 15px; display:flex; justify-content:space-between; align-items:center;">
+            <span id="chatTitle">Conversations</span>
+          </div>
+          <div id="noChatSelected" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color: var(--text3); gap: 1rem;">
+            <div style="font-size: 48px">💬</div>
+            <div>Select a faculty guide to begin chatting</div>
+          </div>
+          <div class="chat-messages" id="chatMessages" style="display:none"></div>
+          
+          <!-- Premium Input Area -->
+          <div class="chat-input-row" id="chatInputArea" style="display:none; gap:10px;">
+            <button id="rateBtn" style="display:none; background:var(--bg); color:var(--text2); border:1px solid var(--border); padding: 0 12px; border-radius: 8px; font-size: 14px; cursor:pointer;" onclick="openRatingModal()">⭐</button>
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()" class="chat-send-btn">Send</button>
+          </div>
+
+          <!-- Free User Prompt Area -->
+          <div id="premiumRequiredArea" style="display:none; padding: 1.5rem 2rem; border-top: 1px solid var(--border); background: var(--amber-bg); text-align:center;">
+             <div style="font-weight: 600; color: var(--amber); margin-bottom: 8px;">👑 Premium Account Required</div>
+             <div style="font-size: 13px; color: var(--amber); margin-bottom: 12px;">Upgrade to Premium to chat directly with faculty guides and accelerate your research.</div>
+             <button class="btn-primary" style="margin:0; padding: 8px 16px; width:auto; display:inline-flex; background: var(--amber);" onclick="window.location.href='#'">Get Premium Access</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentCustomer = null;
+    let isPremium = false;
+    let currentGuides = []; // Store faculty recommendations
+
+    // ─── INITIALIZE SESSION ─────────────────────────────────
+    async function initSession() {
+      const c = JSON.parse(sessionStorage.getItem('customer'));
+      if (!c) { window.location.href = 'login.html'; return; }
+      currentCustomer = c;
+
+      try {
+        const res = await fetch(`/api/customer/details?username=${c.username}`);
+        if (res.ok) {
+          currentCustomer = await res.json();
+          isPremium = currentCustomer.type.toLowerCase() === 'premium';
+          sessionStorage.setItem('customer', JSON.stringify(currentCustomer));
+
+          // Update UI
+          document.getElementById('display-name').textContent = currentCustomer.full_name;
+          document.getElementById('display-type').textContent = currentCustomer.type;
+          document.getElementById('display-type').className = `user-type ${isPremium ? 'type-premium' : 'type-free'}`;
+          document.getElementById('display-avatar').textContent = currentCustomer.full_name[0];
+        }
+      } catch (e) { }
+    }
+
+    // ─── FILE UPLOAD ─────────────────────────────────────────
+    const fileZone = document.getElementById('fileZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileChosen = document.getElementById('fileChosen');
+    const extracting = document.getElementById('extracting');
+
+    fileZone.addEventListener('dragover', e => { e.preventDefault(); fileZone.classList.add('drag'); });
+    fileZone.addEventListener('dragleave', () => fileZone.classList.remove('drag'));
+    fileZone.addEventListener('drop', e => {
+      e.preventDefault(); fileZone.classList.remove('drag');
+      const f = e.dataTransfer.files[0];
+      if (f) handleFile(f);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+      fileChosen.textContent = `📎 ${file.name}`;
+      fileChosen.classList.remove('hidden');
+      if (file.type === 'text/plain' || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
+        extracting.classList.remove('hidden');
+        const reader = new FileReader();
+        reader.onload = e => {
+          extracting.classList.add('hidden');
+          parseDescription(e.target.result);
+        };
+        reader.readAsText(file);
+      } else {
+        document.getElementById('title').value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      }
+    }
+
+    function parseDescription(text) {
+      document.getElementById('description').value = text.trim().substring(0, 1000);
+      const lower = text.toLowerCase();
+      const domainMap = [
+        ['environmental', 'water', 'pollution', 'soil', 'climate', 'ecosystem'],
+        ['biomedical', 'cancer', 'genomics', 'ecg', 'eeg', 'drug', 'clinical'],
+        ['machine learning', 'nlp', 'computer vision', 'transformer', 'reinforcement', 'llm'],
+        ['vlsi', 'fpga', 'pcb', 'circuit', 'embedded', 'rfid', 'motor'],
+        ['nanomaterial', 'xrd', 'sem', 'polymer', 'crystal', 'thin film', 'composite'],
+        ['structural', 'concrete', 'traffic', 'flood', 'pavement', 'bridge', 'geotechnical'],
+      ];
+      const domainNames = ['Environmental Science', 'Biomedical', 'CS-AI', 'Electronics', 'Materials Science', 'Civil'];
+      let bestDomain = '';
+      let bestScore = 0;
+      domainMap.forEach((kws, i) => {
+        const score = kws.filter(kw => lower.includes(kw)).length;
+        if (score > bestScore) { bestScore = score; bestDomain = domainNames[i]; }
+      });
+      if (bestDomain) document.getElementById('domain').value = bestDomain;
+
+      if (lower.includes('computational') || lower.includes('simulation') || lower.includes('algorithm'))
+        document.getElementById('ptype').value = 'Computational';
+      else if (lower.includes('survey') || lower.includes('questionnaire'))
+        document.getElementById('ptype').value = 'Survey-based';
+      else if (lower.includes('experiment') || lower.includes('sensor') || lower.includes('fabricat'))
+        document.getElementById('ptype').value = 'Experimental';
+      else
+        document.getElementById('ptype').value = 'Mixed';
+    }
+
+    // ─── API CALL ─────────────────────────────────────────────
+    async function getRecommendations() {
+      const title = document.getElementById('title').value.trim();
+      const desc = document.getElementById('description').value.trim();
+      const errorBar = document.getElementById('errorBar');
+      errorBar.classList.add('hidden');
+
+      if (!title && !desc) {
+        errorBar.textContent = 'Please enter a project title or description.';
+        errorBar.classList.remove('hidden');
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      document.getElementById('btnText').textContent = 'Analysing…';
+      document.getElementById('btnSpinner').classList.remove('hidden');
+      btn.disabled = true;
+
+      const inp = {
+        project_title: title || 'Research Project',
+        project_description: desc,
+        research_domain: document.getElementById('domain').value || 'Environmental Science',
+        project_type: document.getElementById('ptype').value || 'Experimental',
+        budget_range: document.getElementById('budget').value || '1L-5L',
+        duration_months: parseInt(document.getElementById('duration').value) || 6,
+        team_expertise: document.getElementById('expertise').value || 'Data Analysis',
+        location: (document.getElementById('state_select') ? document.getElementById('state_select').value : '') || 'India',
+        cust_id: currentCustomer.cust_id
+      };
+
+      try {
+        const response = await fetch("/api/recommend", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(inp),
+        });
+        
+        console.log('Response status:', response.status);
+        const result = await response.json();
+        console.log('API Response:', result);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${result.error || 'Unknown error'}`);
+        }
+        
+        renderResults(inp, result);
+        console.log('Results rendered successfully');
+      } catch (e) {
+        console.error('Error in getRecommendations:', e);
+        errorBar.textContent = 'Failed to get recommendations. Please try again.';
+        errorBar.classList.remove('hidden');
+      }
+
+      document.getElementById('btnText').textContent = 'Get recommendations';
+      document.getElementById('btnSpinner').classList.add('hidden');
+      btn.disabled = false;
+    }
+
+    // ─── RENDER RESULTS ───────────────────────────────────────
+    // Infer equipment category badge from item name (engine returns names not categories)
+    function catClass(name) {
+      if (!name) return 'cat-equipment';
+      const n = name.toLowerCase();
+      if (n.includes('sensor') || n.includes('probe') || n.includes('meter') || n.includes('monitor') || n.includes('detector')) return 'cat-sensor';
+      if (n.includes('spectrometer') || n.includes('microscope') || n.includes('analyzer') || n.includes('chromatograph') || n.includes('imaging') || n.includes('diagnostic')) return 'cat-lab';
+      if (n.includes('station') || n.includes('sampler') || n.includes('field') || n.includes('flow')) return 'cat-field';
+      if (n.includes('gpu') || n.includes('tpu') || n.includes('server') || n.includes('computer') || n.includes('workstation') || n.includes('cloud') || n.includes('computing') || n.includes('processor')) return 'cat-computing';
+      if (n.includes('arduino') || n.includes('raspberry') || n.includes('esp') || n.includes('gateway') || n.includes('module') || n.includes('device') || n.includes('kit')) return 'cat-field';
+      return 'cat-equipment';
+    }
+    // Infer equipment label for display
+    function inferEquipLabel(name) {
+      if (!name) return 'Equipment';
+      const n = name.toLowerCase();
+      if (n.includes('sensor') || n.includes('probe') || n.includes('meter') || n.includes('detector')) return 'Sensor';
+      if (n.includes('spectrometer') || n.includes('microscope') || n.includes('analyzer') || n.includes('chromatograph') || n.includes('imaging') || n.includes('diagnostic')) return 'Lab Instrument';
+      if (n.includes('station') || n.includes('sampler') || n.includes('flow')) return 'Field';
+      if (n.includes('gpu') || n.includes('tpu') || n.includes('server') || n.includes('computer') || n.includes('workstation') || n.includes('cloud') || n.includes('computing')) return 'Computing';
+      if (n.includes('arduino') || n.includes('raspberry') || n.includes('esp') || n.includes('gateway') || n.includes('module') || n.includes('device') || n.includes('kit')) return 'IoT Device';
+      return 'Equipment';
+    }
+    function methTypeClass(name) {
+      if (!name) return 'type-anal';
+      const n = name.toLowerCase();
+      if (n.includes('experiment') || n.includes('testing') || n.includes('sampling') || n.includes('monitoring') || n.includes('collection') || n.includes('acquisition') || n.includes('deployment')) return 'type-exp';
+      if (n.includes('computational') || n.includes('simulation') || n.includes('algorithm') || n.includes('model') || n.includes('deep learning') || n.includes('neural') || n.includes('machine') || n.includes('processing') || n.includes('detection') || n.includes('recognition') || n.includes('classification') || n.includes('pipeline') || n.includes('integration') || n.includes('computing') || n.includes('edge')) return 'type-comp';
+      if (n.includes('statistical') || n.includes('analytics') || n.includes('analysis') || n.includes('quality index') || n.includes('index') || n.includes('dispersion') || n.includes('visualization') || n.includes('tracking') || n.includes('hydrological') || n.includes('contaminant')) return 'type-stat';
+      return 'type-anal';
+    }
+    function inferMethLabel(name) {
+      if (!name) return 'Analytical';
+      const n = name.toLowerCase();
+      if (n.includes('experiment') || n.includes('testing') || n.includes('sampling') || n.includes('monitoring') || n.includes('collection') || n.includes('acquisition') || n.includes('deployment')) return 'Experimental';
+      if (n.includes('computational') || n.includes('simulation') || n.includes('algorithm') || n.includes('model') || n.includes('deep learning') || n.includes('neural') || n.includes('machine') || n.includes('processing') || n.includes('detection') || n.includes('recognition') || n.includes('computing')) return 'Computational';
+      if (n.includes('statistical') || n.includes('analytics') || n.includes('analysis') || n.includes('visualization') || n.includes('tracking')) return 'Statistical';
+      return 'Analytical';
+    }
+    function toolDotClass(name) {
+      if (!name) return 'data';
+      const n = name.toLowerCase();
+      if (n.includes('python') || n.includes('matlab') || n.includes('r ') || n === 'r' || n.includes('arduino ide') || n.includes('node-red')) return 'prog';
+      if (n.includes('tensorflow') || n.includes('pytorch') || n.includes('scikit') || n.includes('jupyter') || n.includes('ml') || n.includes('ai ') || n.includes('opencv') || n.includes('bioinformatics')) return 'sim';
+      if (n.includes('gis') || n.includes('visual') || n.includes('dashboard') || n.includes('plot')) return 'viz';
+      if (n.includes('autocad') || n.includes('solidworks') || n.includes('fusion') || n.includes('design')) return 'design';
+      return 'data';
+    }
+
+    function renderResults(inp, r) {
+      console.log('renderResults called with:', { inp, r });
+      
+      currentGuides = r.teachers || []; // Save for profile preview
+      const conf = Math.round((r.confidence || r.confidence_score || 0.85) * 100);
+      let confDesc = 'Good match — recommendations are highly relevant.';
+      if (conf < 80) confDesc = 'Moderate match — verify equipment with domain experts.';
+      if (conf > 92) confDesc = 'Excellent match — strong alignment with training data.';
+
+      console.log('Rendering equipment:', r.recommended_equipment);
+      console.log('All response keys:', Object.keys(r));
+      const equipHtml = (r.recommended_equipment || []).map(eq => {
+        // Handle both array format [name, score] and object format {name, score}
+        const name = Array.isArray(eq) ? eq[0] : eq.name;
+        const score = Array.isArray(eq) ? eq[1] : (eq.score || 0.8);
+        const label = inferEquipLabel(name);
+        return `
+    <div class="equip-item">
+      <span class="equip-name">${name}</span>
+      <span class="equip-cat ${catClass(name)}">${label}</span>
+      <div class="score-bar"><div class="score-fill" style="width:${Math.round(score * 100)}%"></div></div>
+    </div>`;
+      }).join('');
+      
+      console.log('Equipment HTML length:', equipHtml.length);
+
+      const methHtml = (r.recommended_methodologies || []).map(m => {
+        // Handle both array format [name, score] and object format {name, score}
+        const name = Array.isArray(m) ? m[0] : m.name;
+        const score = Array.isArray(m) ? m[1] : (m.score || 0.8);
+        const label = inferMethLabel(name);
+        return `
+    <div class="meth-item">
+      <span class="meth-name">${name}</span>
+      <span class="meth-type ${methTypeClass(name)}">${label}</span>
+    </div>`;
+      }).join('');
+
+      const toolHtml = (r.recommended_tools || []).map(t => {
+        // Handle both array format [name, score] and object format {name, score}
+        const name = Array.isArray(t) ? t[0] : t.name;
+        return `
+    <div class="tool-chip">
+      <span class="tool-dot ${toolDotClass(name)}"></span>
+      ${name}
+    </div>`;
+      }).join('');
+
+      const simHtml = (r.similar_project_ids || []).map(s => {
+        // Engine sends either plain string, or object with project_name/project_title/project_id + similarity
+        const projectName = typeof s === 'string' ? s : (s.project_name || s.project_title || s.project_id || String(s));
+        const n = projectName.toLowerCase();
+        
+        // Infer a short description from the project name
+        let projectDesc = '';
+        if (n.includes('air') || n.includes('pollution') || n.includes('emission') || n.includes('atmospheric')) {
+          projectDesc = 'Air quality monitoring and pollution analysis';
+        } else if (n.includes('water') || n.includes('aquatic') || n.includes('river') || n.includes('lake') || n.includes('drinking')) {
+          projectDesc = 'Water quality assessment and monitoring';
+        } else if (n.includes('iot') || n.includes('smart') || n.includes('sensor') || n.includes('connected')) {
+          projectDesc = 'IoT-based sensor network deployment';
+        } else if (n.includes('ml') || n.includes('ai') || n.includes('predict') || n.includes('neural') || n.includes('deep') || n.includes('machine')) {
+          projectDesc = 'AI/ML-powered analysis and prediction';
+        } else if (n.includes('image') || n.includes('vision') || n.includes('detection') || n.includes('recognition') || n.includes('tracking') || n.includes('vehicle') || n.includes('face') || n.includes('object')) {
+          projectDesc = 'Computer vision and image processing';
+        } else if (n.includes('health') || n.includes('medical') || n.includes('patient') || n.includes('heart') || n.includes('brain') || n.includes('diabetes') || n.includes('care')) {
+          projectDesc = 'Healthcare and biomedical research';
+        } else if (n.includes('home') || n.includes('city') || n.includes('urban') || n.includes('agricultural') || n.includes('industrial') || n.includes('environment')) {
+          projectDesc = 'Smart environment and urban systems';
+        } else {
+          projectDesc = 'Innovative technology research project';
+        }
+        
+        const similarity = typeof s === 'string' ? 0.82 : (s.similarity || 0.82);
+        return `
+    <div class="sim-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+        <span class="sim-title" style="font-weight:600;color:var(--text);">${projectName}</span>
+        <span class="sim-score">${Math.round(similarity * 100)}%</span>
+      </div>
+      <span style="font-size:11px;color:var(--text3);">${projectDesc}</span>
+    </div>`;
+      }).join('');
+
+      const locHtml = (r.location_recommendations || []).map(l => `
+    <div class="loc-chip">📍 ${l}</div>`).join('');
+
+      const roadmapHtml = (r.execution_roadmap || []).map(ph => {
+        // Engine sends steps as a pipe-separated string e.g. "Step A | Step B | Step C"
+        let steps;
+        if (Array.isArray(ph.steps)) {
+          steps = ph.steps;
+        } else if (typeof ph.steps === 'string') {
+          steps = ph.steps.split('|').map(s => s.trim()).filter(Boolean);
+        } else {
+          steps = [];
+        }
+        return `<div class="phase-item">
+      <div class="phase-num">${ph.phase_number}</div>
+      <div class="phase-body">
+        <div class="phase-name">${ph.phase_name}</div>
+        <div class="phase-steps">
+          ${steps.slice(0, 3).map(s => `<div class="phase-step">${s}</div>`).join('')}
+          ${steps.length > 3 ? `<div class="phase-step" style="color:var(--text3)">+ ${steps.length - 3} more steps</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+      }).join('');
+
+      const userLoc = inp.location;
+      const localTeachers = (r.teachers || []).filter(t => {
+        if (!userLoc) return false;
+        const tl = (t.location || '').toLowerCase();
+        const ul = userLoc.toLowerCase();
+        return tl === ul || tl.includes(ul) || ul.includes(tl);
+      });
+      const globalTeachers = (r.teachers || []).filter(t => {
+        if (!userLoc) return true;
+        const tl = (t.location || '').toLowerCase();
+        const ul = userLoc.toLowerCase();
+        return !(tl === ul || tl.includes(ul) || ul.includes(tl));
+      });
+
+    const renderTeacherCard = (t) => {
+      // Skip "Dr." prefix for avatar initial
+      const nameParts = t.full_name.replace(/^Dr\.\s*/i, '').trim();
+      const initial = nameParts[0] || t.full_name[0];
+      return `
+    <div class="teacher-card">
+      <div class="teacher-top">
+        <div class="teacher-avatar">${initial}</div>
+        <div class="teacher-info">
+          <div class="teacher-name">${t.full_name}</div>
+          <div class="teacher-desc">${t.designation} • ${t.institution}</div>
+          <div style="font-size:10px; color:var(--text3); margin-top:2px;">📍 ${t.location}</div>
+        </div>
+      </div>
+      <div class="teacher-tags">
+        <span class="teacher-tag">⭐ ${t.ratings} ${t.ratings !== '-' ? `(${t.rating_count} reviews)` : ''}</span>
+        <span class="teacher-tag">👨‍🏫 ${t.guidance_mode}</span>
+        <span class="teacher-tag">📚 ${t.research_domain}</span>
+      </div>
+      <div class="teacher-btns">
+        <button class="teacher-btn btn-chat" onclick="handleChat('${t.teacher_id}', '${t.full_name}')">Start Conversation</button>
+        <button class="teacher-btn btn-profile" onclick="viewTeacherProfile('${t.teacher_id}')">View Profile</button>
+      </div>
+    </div>`;};
+
+      let teacherHtml = "";
+      if (localTeachers.length > 0) {
+        teacherHtml += `<div class="faculty-subset-title">Local Experts (Same State) <span class="location-badge">Recommended</span></div>`;
+        teacherHtml += localTeachers.map(t => renderTeacherCard(t)).join('');
+      }
+      if (globalTeachers.length > 0) {
+        teacherHtml += `<div class="faculty-subset-title">Regional Recommendations <span>(Across Other States)</span></div>`;
+        teacherHtml += globalTeachers.map(t => renderTeacherCard(t)).join('');
+      }
+      if (!teacherHtml) teacherHtml = '<div style="grid-column:1/-1; padding:2rem; text-align:center; color:var(--text3);">No matching faculty found.</div>';
+
+      const labsHtml = (r.recommended_labs || []).map(lab => {
+        // Parse availability from JSON string if needed
+        let availability = lab.availability;
+        if (typeof availability === 'string') {
+          try {
+            availability = JSON.parse(availability);
+          } catch (e) {
+            availability = { "Monday-Friday": "9:00-18:00", "Saturday": "9:00-13:00", "Sunday": "Closed" };
+          }
+        }
+        
+        const avail = Object.entries(availability || {}).map(([k, v]) => `${k}: ${v}`).join(' | ');
+        return `<div class="lab-item">
+      <div class="lab-main">
+        <div class="lab-title">${lab.lab_name}</div>
+        <div class="lab-loc-tag">📍 ${lab.location}</div>
+      </div>
+      <div class="lab-equip-tags">
+        ${lab.matched_equipment ? lab.matched_equipment.map(e => `<span class="lab-equip-tag">${e}</span>`).join('') : ''}
+      </div>
+      <div class="lab-info-grid">
+        <div class="lab-info-item">
+          <div class="lab-info-label">Availability</div>
+          <div class="lab-info-val">${avail}</div>
+        </div>
+        <div class="lab-info-item">
+          <div class="lab-info-label">Contact</div>
+          <div class="lab-info-val">${lab.contact_person} (${lab.contact_email})</div>
+        </div>
+      </div>
+    </div>`;
+      }).join('') || '<div style="padding:1.5rem;text-align:center;color:var(--text3);font-size:13px">No compatible labs found in nearby locations.</div>';
+
+      const infoHtml = `
+    <div class="info-cell"><div class="info-label">Domain</div><div class="info-val">${inp.research_domain}</div></div>
+    <div class="info-cell"><div class="info-label">Type</div><div class="info-val">${inp.project_type}</div></div>
+    <div class="info-cell"><div class="info-label">Budget</div><div class="info-val">${inp.budget_range} INR</div></div>
+    <div class="info-cell"><div class="info-label">Duration</div><div class="info-val">${inp.duration_months} months</div></div>
+    <div class="info-cell" style="grid-column:1/-1"><div class="info-label">Team expertise</div><div class="info-val">${inp.team_expertise}</div></div>
+  `;
+
+      const aiBadge = r.ai_enhanced ? `<span style="margin-left:auto; font-size:10px; background:var(--amber-bg); color:var(--amber); border:1px solid var(--amber-light); padding:2px 8px; border-radius:100px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">✨ AI Refined</span>` : '';
+
+      document.getElementById('results').innerHTML = `
+    <div class="conf-banner">
+      <div class="conf-score">${conf}%</div>
+      <div class="conf-bar-wrap">
+        <div style="display:flex; align-items:center;">
+          <div class="conf-label">Match confidence</div>
+          ${aiBadge}
+        </div>
+        <div class="conf-bar"><div class="conf-fill" style="width:${conf}%"></div></div>
+        <div class="conf-desc">${confDesc}</div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-blue">📋</div><h3>${inp.project_title || 'Research Project'}</h3></div>
+      <div class="proj-info-grid">${infoHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-blue">🔧</div><h3>Recommended equipment</h3></div>
+      <div class="equip-grid">${equipHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-teal">⚗️</div><h3>Recommended methodologies</h3></div>
+      <div class="meth-list">${methHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-amber">🛠️</div><h3>Software & tools</h3></div>
+      <div class="tool-wrap">${toolHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-violet">🔍</div><h3>Similar projects</h3></div>
+      <div class="similar-list">${simHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-green">🗺️</div>
+        <h3>Execution roadmap</h3>
+        <span class="section-count">${(r.execution_roadmap || []).length} phases</span>
+      </div>
+      <div class="roadmap-wrap">${roadmapHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-violet">👨‍🏫</div>
+        <h3>Matched faculty guides</h3>
+        <span class="section-count">${(r.teachers || []).length} matches</span>
+      </div>
+      <div class="teacher-grid">${teacherHtml}</div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-icon icon-violet">🏢</div><h3>Available labs</h3></div>
+      <div class="lab-list">${labsHtml}</div>
+    </div>
+  `;
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ─── CHAT HANDLING ────────────────────────────────────────
+    function handleChat(teacherId, teacherName) {
+      if (!isPremium) {
+        showPremiumModal();
+        return;
+      }
+      window.location.href = `chat.html?guide=${teacherId}&teacher=${encodeURIComponent(teacherName)}`;
+    }
+
+    function showPremiumModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-icon">👑</div>
+      <h2>Premium Feature</h2>
+      <p>Direct Faculty Chat is available for Premium users. Upgrade now to connect with experts and accelerate your research.</p>
+      <button class="modal-btn btn-gold" onclick="window.location.href='#'">Get Premium Access</button>
+      <button class="modal-btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Maybe later</button>
+    </div>
+  `;
+      document.body.appendChild(overlay);
+      overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    }
+
+// ─── DASHBOARD NAVIGATION (NEW) ──────────────────────────
+let selectedGuide = null;
+let currentCustomerId = null;
+
+function switchSection(sid) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById(sid).classList.add('active');
+  const items = document.querySelectorAll('.nav-item');
+  items.forEach(it => { if(it.getAttribute('onclick').includes(sid)) it.classList.add('active'); });
+
+  if(sid === 'profile') renderProfile();
+  if(sid === 'chat') loadChatList();
+  
+  const titles = { 'recommendation': 'Recommendations', 'profile': 'My Profile', 'chat': 'Conversations' };
+  document.getElementById('section-title').textContent = titles[sid] || 'Dashboard';
+}
+
+async function loadChatList() {
+  if (!currentCustomerId) return;
+  try {
+    const res = await fetch(`/api/customer/chatlist?id=${currentCustomerId}`);
+    const data = await res.json();
+    const list = document.getElementById('chatList');
+    list.innerHTML = data.map(c => {
+      const isUnread = c.is_unread;
+      return `
+      <div class="c-item ${selectedGuide === c.id ? 'active' : ''} ${isUnread ? 'unread-chat' : ''}" onclick="selectGuide('${c.id}', '${c.name}')">
+        <div class="c-item-name">${c.name} ${isUnread ? '🔴' : ''}</div>
+        <div class="c-item-last">${c.last_text}</div>
+      </div>
+    `;}).join('');
+  } catch (e) {}
+}
+
+function renderProfile() {
+  const c = currentCustomer;
+  document.getElementById('p-name').textContent = c.name || c.full_name;
+  document.getElementById('p-badge').textContent = c.type;
+  document.getElementById('p-badge').className = `p-badge ${isPremium ? 'type-premium' : 'type-free'}`;
+  document.getElementById('p-avatar').textContent = (c.name || c.full_name)[0];
+  document.getElementById('p-uni').textContent = c.university || "N/A";
+  document.getElementById('p-dept').textContent = c.department || "N/A";
+  document.getElementById('p-username').textContent = c.username;
+  document.getElementById('p-status').textContent = isPremium ? "👑 Premium Member" : "Standard Free Account";
+}
+
+// ─── CHAT HANDLING (NEW) ──────────────────────────────
+
+async function selectGuide(tid, tname) {
+  selectedGuide = tid;
+  document.getElementById('chatTitle').textContent = tname;
+  document.getElementById('rateBtn').style.display = 'block';
+  
+  // Toggle UI visibility
+  document.getElementById('noChatSelected').style.display = 'none';
+  document.getElementById('chatMessages').style.display = 'flex';
+  
+  // Mark as Read
+  await fetch('/api/chat/mark_read', {
+    method: 'POST',
+    body: JSON.stringify({ 
+      cid: currentCustomerId, 
+      tid: selectedGuide, 
+      uid: currentCustomerId 
+    })
+  });
+  
+  if (isPremium) {
+    document.getElementById('chatInputArea').style.display = 'flex';
+    document.getElementById('premiumRequiredArea').style.display = 'none';
+  } else {
+    document.getElementById('chatInputArea').style.display = 'none';
+    document.getElementById('premiumRequiredArea').style.display = 'block';
+  }
+  
+  loadChatList();
+  loadHistory();
+}
+
+async function loadHistory() {
+  if (!selectedGuide) return;
+  const res = await fetch(`/api/chat/history?user_a=${currentCustomerId}&user_b=${selectedGuide}`);
+  const data = await res.json();
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = data.map(m => `
+    <div class="msg ${m.sender === currentCustomerId ? 'sent' : 'received'}">${m.text}</div>
+  `).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendChatMessage() {
+  const text = document.getElementById('chatInput').value;
+  if (!text || !selectedGuide) return;
+  await fetch('/api/chat/send', {
+    method: 'POST',
+    body: JSON.stringify({ sender: currentCustomerId, receiver: selectedGuide, text: text })
+  });
+  document.getElementById('chatInput').value = '';
+  loadHistory();
+  loadChatList();
+}
+
+// Override original handleChat to stay in dashboard
+function handleChat(teacherId, teacherName) {
+  if (!isPremium) {
+    showPremiumModal();
+    return;
+  }
+  switchSection('chat');
+  selectGuide(teacherId, teacherName);
+}
+
+function showPremiumModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-icon">👑</div>
+      <h2>Premium Feature</h2>
+      <p>Direct Faculty Chat is available for Premium users. Upgrade now to connect with experts and accelerate your research.</p>
+      <button class="modal-btn btn-gold" onclick="window.location.href='#'">Get Premium Access</button>
+      <button class="modal-btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Maybe later</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.onclick = (e) => { if(e.target === overlay) overlay.remove(); };
+}
+
+async function initSession() {
+  const c = JSON.parse(sessionStorage.getItem('customer'));
+  if (!c) { window.location.href = 'login.html'; return; }
+  currentCustomer = c;
+  currentCustomerId = c.cust_id;
+
+  try {
+    const res = await fetch(`/api/customer/details?username=${c.username}`);
+    if (res.ok) {
+      currentCustomer = await res.json();
+      isPremium = currentCustomer.type.toLowerCase() === 'premium';
+      sessionStorage.setItem('customer', JSON.stringify(currentCustomer));
+      
+      // Update UI Header
+      document.getElementById('display-name').textContent = currentCustomer.name || currentCustomer.full_name;
+      document.getElementById('display-type').textContent = currentCustomer.type;
+      document.getElementById('display-type').className = `user-type ${isPremium ? 'type-premium' : 'type-free'}`;
+      document.getElementById('display-avatar').textContent = (currentCustomer.name || currentCustomer.full_name)[0];
+    }
+  } catch(e) {}
+}
+
+initSession();
+
+// Auto-refresh chat
+setInterval(() => {
+  if (document.getElementById('chat').classList.contains('active')) {
+    loadHistory();
+    loadChatList();
+    }
+  }, 5000);
+
+  function viewTeacherProfile(teacherId) {
+    const t = currentGuides.find(g => g.teacher_id === teacherId);
+    if (!t) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'profileOverlay';
+    
+    const keywords = (t.specialization_keywords || []).map(k => `<span class="profile-tag">${k}</span>`).join('');
+    
+    overlay.innerHTML = `
+      <div class="profile-popup">
+        <div class="profile-header">
+          <button class="profile-close" onclick="closeTeacherProfile()">✕</button>
+          <div class="profile-avatar-large">${t.full_name.replace(/^Dr\.\s*/i, '')[0]}</div>
+          <h2 style="margin:0; font-size: 24px; color: white;">${t.full_name}</h2>
+          <div style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 4px;">${t.designation}</div>
+          <div style="color: rgba(255,255,255,0.5); font-size: 13px;">${t.institution}</div>
+        </div>
+        <div class="profile-body">
+          <div class="profile-stats">
+            <div class="stat-box">
+              <div class="stat-label">Experience</div>
+              <div class="stat-value">${t.years_of_experience}y</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Publications</div>
+              <div class="stat-value">${t.publications_count}</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Rating</div>
+              <div class="stat-value" style="font-size:16px">⭐ ${t.ratings}</div>
+            </div>
+          </div>
+          
+          <div class="profile-section-title"><span>📚</span> Research Domain</div>
+          <div style="font-size: 15px; color: #4b5563; margin-bottom: 1.5rem; text-align: left;">${t.research_domain || t.primary_domain}</div>
+          
+          <div class="profile-section-title"><span>✨</span> Specializations</div>
+          <div class="profile-tags">${keywords || '<span style="color:#9ca3af;font-size:13px">No keywords listed</span>'}</div>
+          
+          <button class="btn-primary" style="margin-top: 1rem; width: 100%;" onclick="closeTeacherProfile(); handleChat('${t.teacher_id}', '${t.full_name}')">
+            Start Conversation
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.onclick = (e) => { if (e.target === overlay) closeTeacherProfile(); };
+  }
+
+  function closeTeacherProfile() {
+    const overlay = document.getElementById('profileOverlay');
+    if (overlay) overlay.remove();
+  }
+
+  function openRatingModal() {
+    if (!selectedGuide) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'ratingOverlay';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:320px">
+        <div style="font-size: 24px; margin-bottom: 0.5rem">🌟</div>
+        <h3>Rate your experience</h3>
+        <p style="font-size: 13px; color: var(--text2); margin-bottom: 1.5rem">How was your interaction with the faculty guide?</p>
+        <div style="display:flex; justify-content:center; gap:15px; margin-bottom: 2rem;">
+          ${[1, 2, 3, 4, 5].map(n => `
+            <div onclick="submitRating(${n})" style="cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size: 28px;">⭐</span>
+              <span style="font-size: 12px; color: var(--text3); font-weight:600;">${n}</span>
+            </div>
+          `).join('')}
+        </div>
+        <button class="modal-btn btn-ghost" onclick="document.getElementById('ratingOverlay').remove()">Cancel</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  }
+
+  async function submitRating(val) {
+    if (!selectedGuide || !currentCustomerId) return;
+    await fetch('/api/rate', {
+      method: 'POST',
+      body: JSON.stringify({ teacher_id: selectedGuide, student_id: currentCustomerId, rating: val })
+    });
+    alert('Thank you for your rating!');
+    document.getElementById('ratingOverlay').remove();
+    // Refresh the search results if they exist to show new rating
+    const btn = document.getElementById('submitBtn');
+    if (btn && !btn.disabled) getRecommendations();
+  }
+  </script>
+</body>
+
+</html>

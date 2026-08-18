@@ -1,0 +1,21 @@
+cust_id,name,username,password,age,university,department,type
+C001,Aarav Kumar,aarav_kumar,pass@123,21,IIT Madras,Computer Science,premium
+C002,Diya Sharma,diya_sharma,pass@123,22,NIT Trichy,Electronics,premium
+C003,Arjun Mehta,arjun_mehta,pass@123,20,BITS Pilani,Mechanical Engineering,free
+C004,Sneha Reddy,sneha_reddy,pass@123,23,Anna University,Civil Engineering,free
+C005,Rohan Gupta,rohan_gupta,pass@123,21,SRM Institute,Information Technology,free
+C006,Meera Nair,meera_nair,pass@123,22,Amrita University,Biomedical Engineering,free
+C007,Karthik Subramanian,karthik_subramanian,pass@123,24,VIT Vellore,Computer Science,free
+C008,Ananya Iyer,ananya_iyer_student,pass@123,20,IISc Bangalore,Data Science,free
+C009,Vivek Singh,vivek_singh,pass@123,23,DTU,Software Engineering,free
+C010,Priya Menon,priya_menon_student,pass@123,21,Manipal Institute,Electronics,free
+C011,Rahul Das,rahul_das,pass@123,22,IIIT Hyderabad,Artificial Intelligence,free
+C012,Kavya Nair,kavya_nair,pass@123,20,NIT Calicut,Environmental Science,free
+C013,Sanjay Patel,sanjay_patel,pass@123,23,BITS Goa,Materials Science,free
+C014,Neha Verma,neha_verma,pass@123,21,PSG Tech,Computer Science,free
+C015,Aditya Jain,aditya_jain,pass@123,24,IIT Delhi,Mechanical Engineering,free
+C016,Divya Iyer,divya_iyer_student,pass@123,22,Anna University,Electronics,free
+C017,Prakash Reddy,prakash_reddy_student,pass@123,23,VIT Vellore,Civil Engineering,free
+C018,Anjali Sharma,anjali_sharma,pass@123,20,SRM Institute,Information Technology,free
+C019,Mohan Raj,mohan_raj_student,pass@123,21,IIT Kanpur,Materials Science,free
+C020,Nikhil Kumar,nikhil_kumar,pass@123,22,NIT Warangal,Electrical Engineering,free

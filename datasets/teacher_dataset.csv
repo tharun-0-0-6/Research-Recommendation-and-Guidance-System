@@ -1,0 +1,31 @@
+teacher_id,username,full_name,email,password,designation,institution,location,department,highest_qualification,years_of_experience,specialization_keywords,publications_count
+T001,ananya_iyer,Dr. Ananya Iyer,ananya.iyer@gmail.com,pass@123,Professor,IIT Madras,Tamil Nadu,Environmental Science,PhD,15,Climate Change;Sustainability;Air Quality,42
+T002,vivek_nair,Dr. Vivek Nair,vivek.nair@gmail.com,pass@123,Associate Professor,NIT Calicut,Kerala,Environmental Science,PhD,11,Water Treatment;Waste Management,28
+T003,kavitha_rao,Dr. Kavitha Rao,kavitha.rao@gmail.com,pass@123,Assistant Professor,Anna University,Tamil Nadu,Environmental Science,PhD,7,Ecology;Biodiversity,16
+T004,arjun_pillai,Dr. Arjun Pillai,arjun.pillai@gmail.com,pass@123,Professor,IISc Bangalore,Karnataka,Environmental Science,PhD,18,Renewable Energy;Carbon Footprint,50
+T005,sneha_menon,Dr. Sneha Menon,sneha.menon@gmail.com,pass@123,Assistant Professor,VIT Vellore,Tamil Nadu,Environmental Science,PhD,6,Pollution Control;GIS,14
+T006,rahul_sharma,Dr. Rahul Sharma,rahul.sharma@gmail.com,pass@123,Professor,IIT Delhi,Delhi,Biomedical,PhD,16,Medical Imaging;Bioinformatics,45
+T007,meera_nair,Dr. Meera Nair,meera.nair@gmail.com,pass@123,Associate Professor,Amrita University,Kerala,Biomedical,PhD,10,Biomaterials;Tissue Engineering,26
+T008,karthik_reddy,Dr. Karthik Reddy,karthik.reddy@gmail.com,pass@123,Assistant Professor,SRM University,Tamil Nadu,Biomedical,PhD,8,Wearable Devices;Sensors,20
+T009,priya_menon,Dr. Priya Menon,priya.menon@gmail.com,pass@123,Professor,Manipal Institute,Karnataka,Biomedical,PhD,14,Drug Delivery;Nanomedicine,39
+T010,arvind_kumar,Dr. Arvind Kumar,arvind.kumar@gmail.com,pass@123,Assistant Professor,Saveetha University,Tamil Nadu,Biomedical,PhD,7,Biomechanics;Rehabilitation,18
+T011,sneha_patel,Dr. Sneha Patel,sneha.patel@gmail.com,pass@123,Professor,IISc Bangalore,Karnataka,CS-AI,PhD,18,Deep Learning;Computer Vision;AI Ethics,50
+T012,rohan_das,Dr. Rohan Das,rohan.das@gmail.com,pass@123,Professor,DTU,Delhi,CS-AI,PhD,16,Microservices;DevOps;AI Systems,40
+T013,kavya_subramanian,Dr. Kavya Subramanian,kavya.subramanian@gmail.com,pass@123,Assistant Professor,PSG Tech,Tamil Nadu,CS-AI,PhD,6,Full Stack;Cloud;AI Apps,12
+T014,vivek_gupta,Dr. Vivek Gupta,vivek.gupta@gmail.com,pass@123,Associate Professor,BITS Pilani,Rajasthan,CS-AI,PhD,12,Data Mining;NLP;Big Data,30
+T015,neha_singh,Dr. Neha Singh,neha.singh@gmail.com,pass@123,Assistant Professor,IIIT Hyderabad,Telangana,CS-AI,PhD,9,Reinforcement Learning;ML,22
+T016,karthik_subramanian,Dr. Karthik Subramanian,karthik.sub@gmail.com,pass@123,Professor,Anna University,Tamil Nadu,Electronics,PhD,15,VLSI;Embedded Systems,38
+T017,rohit_verma,Dr. Rohit Verma,rohit.verma@gmail.com,pass@123,Associate Professor,NIT Warangal,Telangana,Electronics,PhD,11,Signal Processing;IoT,27
+T018,mehul_shah,Dr. Mehul Shah,mehul.shah@gmail.com,pass@123,Assistant Professor,VIT Vellore,Tamil Nadu,Electronics,PhD,7,Microcontrollers;Sensors,19
+T019,divya_iyer,Dr. Divya Iyer,divya.iyer@gmail.com,pass@123,Professor,IIT Bombay,Maharashtra,Electronics,PhD,17,Communication Systems;5G,44
+T020,ajay_kumar,Dr. Ajay Kumar,ajay.kumar@gmail.com,pass@123,Assistant Professor,SRM Institute,Tamil Nadu,Electronics,PhD,6,PCB Design;Robotics,15
+T021,arjun_mehta,Dr. Arjun Mehta,arjun.mehta@gmail.com,pass@123,Professor,IIT Kanpur,Uttar Pradesh,Materials Science,PhD,18,Nanomaterials;Metallurgy,48
+T022,pooja_nair,Dr. Pooja Nair,pooja.nair@gmail.com,pass@123,Associate Professor,NIT Surathkal,Karnataka,Materials Science,PhD,12,Polymer Science;Composites,29
+T023,sanjay_gupta,Dr. Sanjay Gupta,sanjay.gupta@gmail.com,pass@123,Assistant Professor,BITS Goa,Goa,Materials Science,PhD,8,Smart Materials;Alloys,21
+T024,rekha_iyer,Dr. Rekha Iyer,rekha.iyer@gmail.com,pass@123,Professor,IISc Bangalore,Karnataka,Materials Science,PhD,16,Thin Films;Nanotech,41
+T025,mohan_raj,Dr. Mohan Raj,mohan.raj@gmail.com,pass@123,Assistant Professor,Anna University,Tamil Nadu,Materials Science,PhD,7,Ceramics;Corrosion,17
+T026,prakash_reddy,Dr. Prakash Reddy,prakash.reddy@gmail.com,pass@123,Professor,IIT Madras,Tamil Nadu,Civil,PhD,17,Structural Engineering;Earthquake Analysis,43
+T027,deepak_sharma,Dr. Deepak Sharma,deepak.sharma@gmail.com,pass@123,Associate Professor,NIT Trichy,Tamil Nadu,Civil,PhD,11,Geotechnical;Soil Mechanics,28
+T028,anjali_verma,Dr. Anjali Verma,anjali.verma@gmail.com,pass@123,Assistant Professor,VIT Vellore,Tamil Nadu,Civil,PhD,7,Transportation;Urban Planning,19
+T029,suresh_babu,Dr. Suresh Babu,suresh.babu@gmail.com,pass@123,Professor,Anna University,Tamil Nadu,Civil,PhD,15,Hydrology;Water Resources,36
+T030,nikhil_jain,Dr. Nikhil Jain,nikhil.jain@gmail.com,pass@123,Assistant Professor,SRM Institute,Tamil Nadu,Civil,PhD,6,Construction Management;Surveying,14
